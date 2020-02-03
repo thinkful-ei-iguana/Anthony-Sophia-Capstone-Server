@@ -28,6 +28,12 @@ const LanguageService = {
       )
       .where({ language_id })
   },
+
+  //make a language service to retrieve the LanguageHead then use in the GET '/head' endpoint
+
+  //make a language service that will process the guess and update the head (correct_count, incorrect_count..)
+  //based on whether it's correct or not
+  //maybe use a Linked List? the table uses a next column
 }
 
 module.exports = LanguageService
