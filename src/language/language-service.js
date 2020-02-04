@@ -46,6 +46,23 @@ const LanguageService = {
       .where({ language_id }).first()
   },
 
+  getNextWord(db, wordId) {
+    return db
+      .from('word')
+      .select(
+        'id',
+        'language_id',
+        'original',
+        'translation',
+        'next',
+        'memory_value',
+        'correct_count',
+        'incorrect_count',
+      )
+      .where({ id: wordId })
+      .first()
+  }
+
   //make a language service that will process the guess and update the head (correct_count, incorrect_count..)
   //based on whether it's correct or not
   //maybe use a Linked List? the table uses a next column
