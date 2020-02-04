@@ -2,6 +2,7 @@ const express = require('express')
 const LanguageService = require('./language-service')
 const { requireAuth } = require('../middleware/jwt-auth')
 const LinkedList = require('./linkedlist')
+const jsonBodyParser = express.json();
 
 const languageRouter = express.Router()
 
@@ -70,49 +71,80 @@ languageRouter
   });
 
 languageRouter
-  .post('/guess', async (req, res, next) => {
-    const { guess } = req.body;
-    // if (!req.body.guess) {
-    //   return res.status(400).json({ error: `Missing 'guess' in request body` })
-    // }
-    //iterate down from the head?
-    try {
+  .post('/guess', jsonBodyParser, async (req, res, next) => {
+    if (!req.body.guess) {
+      return res.status(400).json({
+        error: `Missing 'guess' in request body`
+      })
+    }
 
-      const head = await LanguageService.getLanguageHead(
+    try {
+      let head = await LanguageService.getLanguageHead(
         req.app.get('db'),
         req.language.id,
-      )
+      );
 
-      let memoryValue = head.memory_value;
+      let guess = req.body.guess;
+      let translation = head.translation; 
       let totalScore = req.language.total_score;
-      let incorrectCount = head.incorrect_count;
-      let correctCount = head.correct_count;
-      let translation = head.translation;
-
+      let memoryValue = head.memory_value;
+      let correct_count = head.correct_count;
+      let incorrect_count = head.incorrect_count;
+      let result = ''; //correct or incorrect string value
 
       let words = new LinkedList();
       let currentNode = head;
-      let nextNode = currentNode.next;
 
-      while (currentNode !== null) {
-        words.insertLast(nextWord)
-        nextWord = await LanguageService.getNextWord(
-          req.app.get('db'),
-          nextNode
-        )
+      while (currentNode.next !== null) {
+        words.insertLast(currentNode);
+        //re-assign next value of currentNode to next node
+        currentNode = await LanguageService.getNextWord(
+          req.app.get('db'), currentNode.next
+        );
       }
-      words.insertLast(nextWord);
+      words.insertLast(currentNode);
 
-      console.log('this is words', words);
+      // displayWordList = function (list) {
+      //   let node = head
+      //   while (head) {
+      //     console.log(head.translation)
+      //     node = node.next;
+      //   }
+      // }
 
-      //check if guess is right
+      // displayWordList(words);
 
-      //update the database to reflect answers
-      //incorrect/incorrect/totalscore
 
+      if (guess === translation) {
+        // displaying values on the page
+        totalScore++;
+        correct_count++;
+        result = 'correct';
+
+        // variables related to the linked list
+        memoryValue = memoryValue * 2; // M of the current question
+        // shift every other m for every other question +1
+        // create a new node at the M*2 question
+      } else {
+        memoryValue = 1;
+        incorrect_count++;
+        result = 'incorrect';
+      }
+
+      let finalResults = {
+        result,
+        original: head.original,
+        translation: head.translation,
+        guess: guess,
+        totalScore,
+        correct_count,
+        incorrect_count
+      }
+
+      console.log('this is', finalResults);
 
     } catch (error) {
-      next(error)
+      next(error);
     }
   });
 
