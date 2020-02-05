@@ -106,6 +106,10 @@ languageRouter
 
       let listLength = linkedList.size(); //5
 
+      //console.log(linkedList.head.value)
+      // console.log(linkedList.head.value.memory_value)
+      
+
       if (linkedList.head.value.memory_value > listLength) {
         linkedList.remove(words[0]);
         linkedList.insertLast(words[0]);
@@ -125,6 +129,39 @@ languageRouter
 
       //once the linked list is orderd, convert linked list into an array and re-order
 
+      let sortedList = linkedList.displayList();
+
+      console.log('this is array', sortedList);
+      //make a database call to update the totalscore and word
+
+      //loop through each index (checking for existing next value)
+      //update the next property value for each word
+      for (let i = 0; i < sortedList.length; i++) {
+        if (sortedList[i + 1]) {
+          sortedList[i].next = sortedList[i + 1].id;
+          //console.log(sortedList[i])
+        } else {
+          sortedList[i].next = null;
+        }
+        await LanguageService.updateWord(
+          req.app.get('db'),
+          sortedList[i].id,
+          sortedList[i]);
+      }
+
+      console.log('this is SPARTA!', guess);
+
+      console.log('final list', sortedList); //now an array
+
+      results = {
+        nextWord: sortedList[0].original,
+        wordCorrectCount: sortedList[0].correct_count,
+        wordIncorrectCount: sortedList[0].incorrect_count,
+        totalScore: req.language.total_score,
+        answer: words[0].translation,
+        guess: guess,
+        isCorrect: (guess.toLowerCase() === words[0].translation.toLowerCase())
+      };
 
       return res.status(200).json(results);
     } catch (error) {
