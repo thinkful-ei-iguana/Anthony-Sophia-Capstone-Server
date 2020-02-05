@@ -1,7 +1,6 @@
 const express = require('express')
 const LanguageService = require('./language-service')
 const { requireAuth } = require('../middleware/jwt-auth')
-const LinkedList = require('./linkedlist')
 const jsonBodyParser = express.json();
 
 const languageRouter = express.Router()
@@ -72,77 +71,46 @@ languageRouter
 
 languageRouter
   .post('/guess', jsonBodyParser, async (req, res, next) => {
-    if (!req.body.guess) {
-      return res.status(400).json({
-        error: `Missing 'guess' in request body`
-      })
-    }
-
     try {
-      let head = await LanguageService.getLanguageHead(
+      const { guess } = req.body;
+
+      if (!req.body.guess) {
+        return res.status(400).json({ error: `Missing 'guess' in request body` });
+      }
+
+      const words = await LanguageService.getLanguageWords(
         req.app.get('db'),
-        req.language.id,
+        req.language.id
       );
 
-      let guess = req.body.guess;
-      let translation = head.translation; 
-      let totalScore = req.language.total_score;
-      let memoryValue = head.memory_value;
-      let correct_count = head.correct_count;
-      let incorrect_count = head.incorrect_count;
-      let result = ''; //correct or incorrect string value
-
-      let words = new LinkedList();
-      let currentNode = head;
-
-      while (currentNode.next !== null) {
-        words.insertLast(currentNode);
-        //re-assign next value of currentNode to next node
-        currentNode = await LanguageService.getNextWord(
-          req.app.get('db'), currentNode.next
-        );
-      }
-      words.insertLast(currentNode);
-
-      // displayWordList = function (list) {
-      //   let node = head
-      //   while (head) {
-      //     console.log(head.translation)
-      //     node = node.next;
-      //   }
-      // }
-
-      // displayWordList(words);
-
-
-      if (guess === translation) {
-        // displaying values on the page
-        totalScore++;
-        correct_count++;
-        result = 'correct';
-
-        // variables related to the linked list
-        memoryValue = memoryValue * 2; // M of the current question
-        // shift every other m for every other question +1
-        // create a new node at the M*2 question
+      if (guess.toLowerCase() === words[0].translation.toLowerCase()) {
+        words[0].correct_count++;
+        words[0].memory_value = words[0].memory_value * 2;
+        req.language.total_score++;
       } else {
-        memoryValue = 1;
-        incorrect_count++;
-        result = 'incorrect';
+        words[0].incorrect_count++;
+        words[0].memory_value = 1;
       }
 
-      let finalResults = {
-        result,
-        original: head.original,
-        translation: head.translation,
-        guess: guess,
-        totalScore,
-        correct_count,
-        incorrect_count
-      }
+      //convert array into a Linked list
 
-      console.log('this is', finalResults);
+      //determine positioning using insert methods and save it into a variable
 
+      //once the linked list is orderd, convert linked list into an array and re-order
+
+      //make a database call to update the totalscore and word
+
+
+      // response = {
+      //   nextWord: 
+      //   wordCorrectCount: 
+      //   wordIncorrectCount:
+      //   totalScore: 
+      //   answer: 
+      //   isCorrect: 
+      // };
+
+      // return res.status(200).json(response);
     } catch (error) {
       next(error);
     }

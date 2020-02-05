@@ -1,3 +1,5 @@
+const LinkedList = require('./LinkedList/linkedlist')
+
 const LanguageService = {
   getUsersLanguage(db, user_id) {
     return db
@@ -61,7 +63,27 @@ const LanguageService = {
       )
       .where({ id: wordId })
       .first()
-  }
+  },
+
+  makeLinkedList(words) {
+    const linkedList = new LinkedList();
+    words.forEach(word => linkedList.insertLast(word));
+    return linkedList;
+  },
+
+  updateWord(db, id, data) {
+    return db('word')
+      .where({ id })
+      .update({ ...data });
+  },
+
+  updateTotalScore(db, id, total) {
+    return db('language')
+      .where({ id })
+      .update({ total_score: total });
+  },
+
+
 
   //make a language service that will process the guess and update the head (correct_count, incorrect_count..)
   //based on whether it's correct or not
