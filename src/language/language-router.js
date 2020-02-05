@@ -108,17 +108,23 @@ languageRouter
 
       if (linkedList.head.value.memory_value > listLength) {
         linkedList.remove(words[0]);
+        linkedList.insertLast(words[0]);
+      }
+      else {
+        linkedList.remove(words[0])
+        linkedList.insertAt(
+          words[0].memory_value,
+          words[0])
+      }
+
+      // console.log('length', listLength)
+
+      //when correct move it 2 spaces
+      //when incorrect move it 1 space
 
 
+      //once the linked list is orderd, convert linked list into an array and re-order
 
-
-
-
-
-
-
-
-        
 
       return res.status(200).json(results);
     } catch (error) {
