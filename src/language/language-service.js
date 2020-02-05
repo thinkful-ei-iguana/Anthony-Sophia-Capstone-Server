@@ -65,7 +65,7 @@ const LanguageService = {
       .first()
   },
 
-  makeLinkedList(words) {
+  convertLinkedList(words) {
     const linkedList = new LinkedList();
     words.forEach(word => linkedList.insertLast(word));
     return linkedList;

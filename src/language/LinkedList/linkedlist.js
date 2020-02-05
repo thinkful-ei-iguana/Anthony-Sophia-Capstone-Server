@@ -98,7 +98,7 @@ class LinkedList {
         }
         previousNode.next = currNode.next;
     }
-    find(item) {
+    find(item) { //find a node
         let currNode = this.head;
         if (!this.head) {
             return null;
@@ -112,7 +112,7 @@ class LinkedList {
         }
         return currNode;
     }
-    size() {
+    size() { //returns the size of the linked list
         let counter = 0;
         let currNode = this.head;
         if (!currNode) {
@@ -124,7 +124,7 @@ class LinkedList {
         }
         return counter;
     }
-    displayList() {
+    displayList() { //displays the linked list
         const arr = [];
         let currNode = this.head;
         while (currNode !== null) {

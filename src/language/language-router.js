@@ -92,25 +92,35 @@ languageRouter
         words[0].memory_value = 1;
       }
 
+      await LanguageService.updateTotalScore(
+        req.app.get('db'),
+        req.language.id,
+        req.language.total_score
+      );
       //convert array into a Linked list
+      let linkedList = LanguageService.convertLinkedList(words);
+
+      // console.log('this is linkedlist', linkedList);
 
       //determine positioning using insert methods and save it into a variable
 
-      //once the linked list is orderd, convert linked list into an array and re-order
+      let listLength = linkedList.size(); //5
 
-      //make a database call to update the totalscore and word
+      if (linkedList.head.value.memory_value > listLength) {
+        linkedList.remove(words[0]);
 
 
-      // response = {
-      //   nextWord: 
-      //   wordCorrectCount: 
-      //   wordIncorrectCount:
-      //   totalScore: 
-      //   answer: 
-      //   isCorrect: 
-      // };
 
-      // return res.status(200).json(response);
+
+
+
+
+
+
+
+        
+
+      return res.status(200).json(results);
     } catch (error) {
       next(error);
     }
