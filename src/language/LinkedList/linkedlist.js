@@ -63,10 +63,15 @@ class LinkedList {
         if (nthPosition === 0) {
             this.insertFirst(itemToInsert);
         } else {
-            const node = this._findNthElement(nthPosition - 1);
+            let node = this._findNthElement(nthPosition - 1);
             const newNode = new _Node(itemToInsert, null);
-            newNode.next = node.next;
-            node.next = newNode;
+            if (!node) {
+                // we are at the next value of the last element in the linked list
+                node = newNode;
+            } else {
+                newNode.next = node.next;
+                node.next = newNode;
+            }
         }
     }
     _findNthElement(position) {

@@ -18,6 +18,7 @@ const LanguageService = {
   getLanguageWords(db, language_id) {
     return db
       .from('word')
+
       .select(
         'id',
         'language_id',
@@ -29,6 +30,9 @@ const LanguageService = {
         'incorrect_count',
       )
       .where({ language_id })
+      .orderBy('memory_value')
+      .orderBy('id')
+
   },
 
   //make a language service to retrieve the LanguageHead then use in the GET '/head' endpoint
@@ -45,7 +49,10 @@ const LanguageService = {
         'correct_count',
         'incorrect_count',
       )
-      .where({ language_id }).first()
+      .where({ language_id })
+      .orderBy('memory_value')
+      .orderBy('id')
+      .first()
   },
 
   getNextWord(db, wordId) {
@@ -62,6 +69,8 @@ const LanguageService = {
         'incorrect_count',
       )
       .where({ id: wordId })
+      .orderBy('memory_value')
+      .orderBy('id')
       .first()
   },
 
