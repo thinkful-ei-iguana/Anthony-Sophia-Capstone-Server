@@ -108,10 +108,10 @@ languageRouter
 
       //convert array into a Linked list
       let linkedList = LanguageService.convertLinkedList(words);
-
+      let listSize = linkedList.size()
       //determine positioning using insert methods and save it into a variable
       let currentWord = linkedList.head.value;
-      if (linkedList.head.value.memory_value) {
+      if (linkedList.head.value.memory_value > listSize ) {
         linkedList.remove(words[0]);
         linkedList.insertLast(words[0]);
       }
