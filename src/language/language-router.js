@@ -79,8 +79,21 @@ languageRouter
       );
 
       if (guess.toLowerCase() === words[0].translation.toLowerCase()) {
+
+        const allEqual = words.every(word => {
+          word.memory_value === 2
+        })
+
+        console.log('this is boolean', allEqual);
+        if (allEqual) {
+          words[0].memory_value = 1
+          console.log('it got resetted')
+        } else {
+          words[0].memory_value = words[0].memory_value * 2;
+          console.log('it got multiplied')
+        }
         words[0].correct_count++;
-        words[0].memory_value = words[0].memory_value * 2;
+
         req.language.total_score++;
       } else {
         words[0].incorrect_count++;
@@ -97,8 +110,7 @@ languageRouter
       let linkedList = LanguageService.convertLinkedList(words);
 
       //determine positioning using insert methods and save it into a variable
-
-      var currentWord = linkedList.head.value;
+      let currentWord = linkedList.head.value;
       if (linkedList.head.value.memory_value) {
         linkedList.remove(words[0]);
         linkedList.insertLast(words[0]);
