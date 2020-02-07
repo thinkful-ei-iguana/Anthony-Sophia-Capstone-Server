@@ -203,7 +203,7 @@ describe.only('Language Endpoints', function () {
           .set('Authorization', helpers.makeAuthHeader(testUser))
           .send(incorrectPostBody)
           .expect({
-            currentWord: testLanguagesWords[0].original,
+            currentWord: testLanguagesWords[1].original,
             nextWord: testLanguagesWords[0].original,
             totalScore: 0,
             wordCorrectCount: 0,
@@ -276,6 +276,7 @@ describe.only('Language Endpoints', function () {
           .set('Authorization', helpers.makeAuthHeader(testUser))
           .send(correctPostBody)
           .expect({
+            currentWord: testLanguagesWords[2].original,
             nextWord: testLanguagesWords[0].original,
             totalScore: 3,
             wordCorrectCount: 1,

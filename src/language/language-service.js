@@ -30,8 +30,6 @@ const LanguageService = {
         'incorrect_count',
       )
       .where({ language_id })
-      .orderBy('memory_value')
-      .orderBy('id')
 
   },
 
@@ -50,8 +48,6 @@ const LanguageService = {
         'incorrect_count',
       )
       .where({ language_id })
-      .orderBy('memory_value')
-      .orderBy('id')
       .first()
   },
 
@@ -69,8 +65,6 @@ const LanguageService = {
         'incorrect_count',
       )
       .where({ id: wordId })
-      .orderBy('memory_value')
-      .orderBy('id')
       .first()
   },
 
