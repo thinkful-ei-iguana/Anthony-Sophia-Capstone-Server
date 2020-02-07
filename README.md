@@ -2,7 +2,7 @@
 
 The spaced repetition technique lets users focus on the words that prove to be the most troublesome for them.  By displaying each card at set intervals, mastered words are shown less frequently while troublesome cards are shown more frequently.
 
-This project was created by [Anthony Bostic] (https://github.com/AnthonyTB) and [Sophia Koeut] (https://github.com/cantuus)
+This project was created by Anthony Bostic (https://github.com/AnthonyTB) and Sophia Koeut (https://github.com/cantuus)
 
 ## Local dev setup
 
