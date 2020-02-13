@@ -1,56 +1,52 @@
-# Spaced repetition API!
+# Dozo
 
-The spaced repetition technique lets users focus on the words that prove to be the most troublesome for them.  By displaying each card at set intervals, mastered words are shown less frequently while troublesome cards are shown more frequently.
+Dozo is an application that implements Spaced Repetition where users can learn basic Japanese words and can take a practice word anytime when they are ready for it. Users able to check their answer is correct or incorrect directly on the learning page. Also, Dozo will display how many times they got correct or incorrect answers for each word and total score on the dashboard page. 
 
-This project was created by Anthony Bostic (https://github.com/AnthonyTB) and Sophia Koeut (https://github.com/cantuus)
+Live Demo: https://spaced-repetition.anthonytb.now.sh/
 
-## Local dev setup
+Client Repo: https://github.com/thinkful-ei-iguana/Anthony-Sophia-Capstone 
 
-If using user `dunder-mifflin`:
+## Account Demo Login
 
-```bash
-mv example.env .env
-createdb -U dunder-mifflin spaced-repetition
-createdb -U dunder-mifflin spaced-repetition-test
-```
+Username: admin
 
-If your `dunder-mifflin` user has a password be sure to set it in `.env` for all appropriate fields. Or if using a different user, update appropriately.
+Password: pass
 
-```bash
-npm install
-npm run migrate
-env MIGRATION_DB_NAME=spaced-repetition-test npm run migrate
-```
+## Technologies Used
 
-And `npm test` should work at this point
+Client Side deployed on Zeit
 
-## Configuring Postgres
+- React.js
+- JavaScript
+- HTML
+- CSS
+- Cypress
 
-For tests involving time to run properly, configure your Postgres database to run in the UTC timezone.
+API Server Side deployed on Heroku
 
-1. Locate the `postgresql.conf` file for your Postgres installation.
-   1. E.g. for an OS X, Homebrew install: `/usr/local/var/postgres/postgresql.conf`
-   2. E.g. on Windows, _maybe_: `C:\Program Files\PostgreSQL\11.2\data\postgresql.conf`
-   3. E.g  on Ubuntu 18.04 probably: '/etc/postgresql/10/main/postgresql.conf'
-2. Find the `timezone` line and set it to `UTC`:
+- Express.js
+- Node.js
+- PostgreSQL
+- JWT Decode
 
-```conf
-# - Locale and Formatting -
+## Endpoints
 
-datestyle = 'iso, mdy'
-#intervalstyle = 'postgres'
-timezone = 'UTC'
-#timezone_abbreviations = 'Default'     # Select the set of available time zone
-```
+1. `GET /api/language/`
 
-## Scripts
+This returns all the words and their associated data that match the id of the
+logged in user. This is used in the dashboard view when a user first logs in.
 
-Start the application `npm start`
+2. `GET /api/language/head`
 
-Start nodemon for the application `npm run dev`
+This returns the word that is currently in first place for testing the user as
+well as information about it and the next word. This is used in the client's
+`/learn` route and displays when the user clicks to begin practicing.
 
-Run the tests mode `npm test`
+3. `POST /api/language/guess`
 
-Run the migrations up `npm run migrate`
-
-Run the migrations down `npm run migrate -- 0`
+This captures the user's inputed guess and checks it against the correct answer
+stored in the database. The server then updates the word's data appropriately
+according to whether the user's guess was correct or incorrect and also pushes
+the word back in the order of words (one space back for incorrect answer and
+further for correct) using a linked list and then updates the database so that
+the new ordering persists. 
