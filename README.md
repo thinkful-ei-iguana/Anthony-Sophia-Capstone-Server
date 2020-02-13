@@ -30,48 +30,24 @@ API Server Side deployed on Heroku
 
 -----------------------
 
-## Setup
+## Endpoints
 
-To setup the application
+1. `GET /api/language/`
 
-1. Fork and clone the project to your machine
-2. `npm install`. This will also install the application *Cypress.io* for running browser integration tests
+This returns all the words and their associated data that match the id of the
+logged in user. This is used in the dashboard view when a user first logs in.
 
-The project expects you have the Spaced repetition API project setup and running on http://localhost:8000.
+2. `GET /api/language/head`
 
-Find instructions to setup the API here https://github.com/Thinkful-Ed/spaced-repetition-api.
+This returns the word that is currently in first place for testing the user as
+well as information about it and the next word. This is used in the client's
+`/learn` route and displays when the user clicks to begin practicing.
 
-## Running project
+3. `POST /api/language/guess`
 
-This is a `create-react-app` project so `npm start` will start the project in development mode with hot reloading by default.
-
-## Running the tests
-
-This project uses [Cypress IO](https://docs.cypress.io) for integration testing using the Chrome browser.
-
-Cypress has the following expectations:
-
-- You have cypress installed (this is a devDependency of the project)
-- You have your application running at http://localhost:3000.
-  - You can change the address of this expectation in the `./cypress.json` file.
-- Your `./src/config.js` is using http://localhost:8000/api as the `API_ENDPOINT`
-
-To start the tests run the command:
-
-```bash
-npm run cypress:open
-```
-
-On the first run of this command, the cypress application will verify its install. Any other runs after this, the verification will be skipped.
-
-The command will open up the Cypress application which reads tests from the `./cypress/integration/` directory. You can then run individual tests by clicking on the file names or run all tests by clicking the "run all tests" button in the cypress GUI.
-
-Tests will assert against your running localhost client application.
-
-You can also start all of the tests in the command line only (not using the GUI) by running the command:
-
-```bash
-npm run cypress:run
-```
-
-This will save video recordings of the test runs in the directory `./cypress/videos/`.
+This captures the user's inputed guess and checks it against the correct answer
+stored in the database. The server then updates the word's data appropriately
+according to whether the user's guess was correct or incorrect and also pushes
+the word back in the order of words (one space back for incorrect answer and
+further for correct) using a linked list and then updates the database so that
+the new ordering persists. 
