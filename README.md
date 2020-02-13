@@ -28,8 +28,6 @@ API Server Side deployed on Heroku
 - PostgreSQL
 - JWT Decode
 
------------------------
-
 ## Endpoints
 
 1. `GET /api/language/`
