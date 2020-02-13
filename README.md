@@ -11,7 +11,7 @@ Username: admin
 
 Password: pass
 
-## Techinologies Used
+## Technologies Used
 
 Client Side deployed on Zeit
 
