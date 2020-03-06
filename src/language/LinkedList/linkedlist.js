@@ -117,6 +117,7 @@ class LinkedList {
         }
         return currNode;
     }
+    }
     size() { //returns the size of the linked list
         let counter = 0;
         let currNode = this.head;
